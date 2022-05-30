@@ -1,18 +1,18 @@
-﻿using Custumers.API.Model;
+﻿using Customers.API.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Custumers.API.Model.Context
+namespace Customers.API.Model.Context
 {
     public class MySQLContext : DbContext
     {
         public MySQLContext() {}
         public MySQLContext(DbContextOptions<MySQLContext> options) : base(options) { }
 
-        public DbSet<Custumer> Custumer { get; set; }
+        public DbSet<Customer> Customer { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Custumer>().HasData(new Custumer
+            modelBuilder.Entity<Customer>().HasData(new Customer
             {
                 Id = 1,
                 Name = "Thainá",
@@ -20,7 +20,7 @@ namespace Custumers.API.Model.Context
                 Age = 25,
                 Gender = "Female"
             });
-            modelBuilder.Entity<Custumer>().HasData(new Custumer
+            modelBuilder.Entity<Customer>().HasData(new Customer
             {
                 Id = 2,
                 Name = "Thais",

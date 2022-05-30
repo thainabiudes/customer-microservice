@@ -1,7 +1,7 @@
 using AutoMapper;
-using Custumers.API.Config;
-using Custumers.API.Model.Context;
-using Custumers.API.Repository;
+using Customers.API.Config;
+using Customers.API.Model.Context;
+using Customers.API.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 
-namespace Custumers.API
+namespace Customers.API
 {
     public class Startup
     {
@@ -36,12 +36,12 @@ namespace Custumers.API
             services.AddSingleton(mapper);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddScoped<ICustumerRepository, CustumerRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Custumers5.0", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Customers5.0", Version = "v1" });
                 c.EnableAnnotations();
             });
         }
@@ -53,7 +53,7 @@ namespace Custumers.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Custumers5._0 v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Customers5._0 v1"));
             }
 
             app.UseHttpsRedirection();

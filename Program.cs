@@ -1,4 +1,4 @@
-using Custumers.API;
+using Customers.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Custumers5._0
+namespace Customers5._0
 {
     public class Program
     {

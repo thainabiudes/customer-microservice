@@ -1,6 +1,6 @@
-﻿namespace Custumers.API.Data.ValueObjects
+﻿namespace Customers.API.Data.ValueObjects
 {
-    public class CustumerVO
+    public class CustomerVO
     {
         public long Id { get; set; }
         public string Name { get; set; }

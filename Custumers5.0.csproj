@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>Custumers5._0</RootNamespace>
+    <RootNamespace>Customers5.0</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

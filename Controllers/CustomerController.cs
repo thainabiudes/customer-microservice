@@ -1,34 +1,34 @@
-using Custumers.API.Data.ValueObjects;
-using Custumers.API.Repository;
+using Customers.API.Data.ValueObjects;
+using Customers.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Custumers.Controllers
+namespace Customers.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CustumerController : ControllerBase
+    public class CustomerController : ControllerBase
     {
 
-        private ICustumerRepository _repository;
+        private ICustomerRepository _repository;
 
-        public CustumerController(ICustumerRepository repository)
+        public CustomerController(ICustomerRepository repository)
         {
             _repository = repository ?? throw new
                 ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustumerVO>>> FindAll()
+        public async Task<ActionResult<IEnumerable<CustomerVO>>> FindAll()
         {
             var products = await _repository.FindAll();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CustumerVO>> FindById(long id)
+        public async Task<ActionResult<CustomerVO>> FindById(long id)
         {
             if (string.IsNullOrEmpty(id.ToString()))
             {
@@ -41,7 +41,7 @@ namespace Custumers.Controllers
         }
 
         [HttpGet("name/{name}")]
-        public async Task<ActionResult<IEnumerable<CustumerVO>>> FindByName(string name)
+        public async Task<ActionResult<IEnumerable<CustomerVO>>> FindByName(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -54,7 +54,7 @@ namespace Custumers.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustumerVO>> Create([FromBody] CustumerVO vo)
+        public async Task<ActionResult<CustomerVO>> Create([FromBody] CustomerVO vo)
         {
             if (vo == null ||
                 string.IsNullOrEmpty(vo.Name) ||
@@ -71,7 +71,7 @@ namespace Custumers.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<CustumerVO>> Update(long id, [FromBody] CustumerVO vo)
+        public async Task<ActionResult<CustomerVO>> Update(long id, [FromBody] CustomerVO vo)
         {
             if (string.IsNullOrEmpty(vo.Name) ||
                 string.IsNullOrEmpty(vo.LastName) ||

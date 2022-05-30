@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "Custumers.API": {
+    "Customers.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Custumers5._0.Migrations
+namespace Customers5._0.Migrations
 {
-    public partial class AddCustumerDataTableOnDB : Migration
+    public partial class AddCustomerDataTableOnDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace Custumers5._0.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "custumer",
+                name: "customer",
                 columns: table => new
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
@@ -26,17 +26,17 @@ namespace Custumers5._0.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_custumer", x => x.id);
+                    table.PrimaryKey("PK_customer", x => x.id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
-                table: "custumer",
+                table: "customer",
                 columns: new[] { "id", "age", "gender", "last_name", "name" },
                 values: new object[] { 1L, 25, "Female", "Costa", "Thainá" });
 
             migrationBuilder.InsertData(
-                table: "custumer",
+                table: "customer",
                 columns: new[] { "id", "age", "gender", "last_name", "name" },
                 values: new object[] { 2L, 34, "Female", "Costa", "Thais" });
         }
@@ -44,7 +44,7 @@ namespace Custumers5._0.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "custumer");
+                name: "customer");
         }
     }
 }

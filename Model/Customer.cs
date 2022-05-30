@@ -1,11 +1,11 @@
-﻿using Custumers.API.Model.Base;
+﻿using Customers.API.Model.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Custumers.API.Model
+namespace Customers.API.Model
 {
-    [Table("custumer")]
-    public class Custumer : BaseEntity
+    [Table("customer")]
+    public class Customer : BaseEntity
     {
         [Column("name")]
         [Required]
