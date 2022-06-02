@@ -1,4 +1,6 @@
 using Customers.API.Data.ValueObjects;
+using Customers.API.Messages;
+using Customers.API.RabbitMQSender;
 using Customers.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,18 +15,23 @@ namespace Customers.Controllers
     {
 
         private ICustomerRepository _repository;
+        private IRabbitMQMessageSender _rabbitMQMessageSender;
 
-        public CustomerController(ICustomerRepository repository)
+        public CustomerController(ICustomerRepository repository,
+            IRabbitMQMessageSender rabbitMQMessageSender)
         {
-            _repository = repository ?? throw new
-                ArgumentNullException(nameof(repository));
+            _repository = repository
+                ?? throw new ArgumentNullException(nameof(repository));
+            _rabbitMQMessageSender = rabbitMQMessageSender
+                ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
         }
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CustomerVO>>> FindAll()
         {
-            var products = await _repository.FindAll();
-            return Ok(products);
+            var customers = await _repository.FindAll();
+            return Ok(customers);
         }
 
         [HttpGet("{id}")]
@@ -35,9 +42,9 @@ namespace Customers.Controllers
                 return BadRequest("ID is required");
             }
 
-            var product = await _repository.FindById(id);
-            if (product == null) return NotFound();
-            return Ok(product);
+            var customer = await _repository.FindById(id);
+            if (customer == null) return NotFound();
+            return Ok(customer);
         }
 
         [HttpGet("name/{name}")]
@@ -48,9 +55,9 @@ namespace Customers.Controllers
                 return BadRequest("Name is required");
             }
 
-            var product = await _repository.FindByName(name);
-            if (product == null) return NotFound();
-            return Ok(product);
+            var customer = await _repository.FindByName(name);
+            if (customer == null) return NotFound();
+            return Ok(customer);
         }
 
         [HttpPost]
@@ -66,8 +73,8 @@ namespace Customers.Controllers
                 return BadRequest("All request body is required");
             }
 
-            var product = await _repository.Create(vo);
-            return Ok(product);
+            var customer = await _repository.Create(vo);
+            return Ok(customer);
         }
 
         [HttpPut("{id}")]
@@ -83,9 +90,9 @@ namespace Customers.Controllers
                 return BadRequest("All request body or params are required");
             }
             
-            var product = await _repository.Update(id, vo);
-            if (product == null) return NotFound("ID not found");
-            return Ok(product);
+            var customer = await _repository.Update(id, vo);
+            if (customer == null) return NotFound("ID not found");
+            return Ok(customer);
         }
 
         [HttpDelete("{id}")]
@@ -99,6 +106,30 @@ namespace Customers.Controllers
             var status = await _repository.Delete(id);
             if (!status) return NotFound("ID not found");
             return Ok(status);
+        }
+
+        [HttpPost("send-email")]
+        public async Task<ActionResult<MessageVO>> SendEmail(long id, string bodyEmail)
+        {
+            if (string.IsNullOrEmpty(id.ToString()) || string.IsNullOrEmpty(bodyEmail)) return BadRequest();
+            
+            var customer = await _repository.FindById(id);
+
+            if (customer == null) return NotFound();
+
+            MessageVO vo = new MessageVO();
+
+            vo.Name = customer.Name;
+            vo.Gender = customer.Gender;
+            vo.Age = customer.Age;
+            vo.Email = customer.Email;
+            vo.LastName = customer.LastName;
+            vo.BodyEmail = bodyEmail;
+            vo.Id = id;
+
+            _rabbitMQMessageSender.SendMessage(vo, "emailqueue");
+
+            return Ok(vo);
         }
     }
 }

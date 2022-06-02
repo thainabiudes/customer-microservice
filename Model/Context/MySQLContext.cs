@@ -18,7 +18,8 @@ namespace Customers.API.Model.Context
                 Name = "Thainá",
                 LastName = "Costa",
                 Age = 25,
-                Gender = "Female"
+                Gender = "Female",
+                Email = "thaina.biudes@gmail.com"
             });
             modelBuilder.Entity<Customer>().HasData(new Customer
             {
@@ -26,7 +27,8 @@ namespace Customers.API.Model.Context
                 Name = "Thais",
                 LastName = "Costa",
                 Age = 34,
-                Gender = "Female"
+                Gender = "Female",
+                Email = "ina_biudes@hotmail.com"
             });
         }
     }

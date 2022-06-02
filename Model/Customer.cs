@@ -25,5 +25,9 @@ namespace Customers.API.Model
         [StringLength(50)]
         public string Gender { get; set; }
 
+        [Column("email")]
+        [StringLength(150)]
+        public string Email { get; set; }
+
     }
 }
