@@ -33,6 +33,12 @@ namespace Customers.API.Repository
             return _mapper.Map<List<CustomerVO>>(Customers);
         }
 
+        public async Task<IEnumerable<CustomerVO>> FindListIds(ListVO vo)
+        {
+            List<Customer> Customers = await _context.Customer.Where(p => vo.ids.Contains((long)p.Id)).ToListAsync();
+            return _mapper.Map<List<CustomerVO>>(Customers);
+        }
+
         public async Task<CustomerVO> FindById(long id)
         {
             Customer customer =

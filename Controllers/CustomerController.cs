@@ -117,19 +117,32 @@ namespace Customers.Controllers
 
             if (customer == null) return NotFound();
 
-            MessageVO vo = new MessageVO();
+            MessageVO message = new MessageVO();
 
-            vo.Name = customer.Name;
-            vo.Gender = customer.Gender;
-            vo.Age = customer.Age;
-            vo.Email = customer.Email;
-            vo.LastName = customer.LastName;
-            vo.BodyEmail = bodyEmail;
-            vo.Id = id;
+            message.Name = customer.Name;
+            message.Gender = customer.Gender;
+            message.Age = customer.Age;
+            message.Email = customer.Email;
+            message.LastName = customer.LastName;
+            message.BodyEmail = bodyEmail;
+            message.Id = id;
 
-            _rabbitMQMessageSender.SendMessage(vo, "emailqueue");
+            _rabbitMQMessageSender.SendMessage(message, "emailqueue");
 
-            return Ok(vo);
+            return Ok(message);
         }
+
+        [HttpPost("list")]
+        public async Task<ActionResult<IEnumerable<CustomerVO>>> ListIds([FromBody] ListVO ids)
+        {
+            if (string.IsNullOrEmpty(ids.ToString())) return BadRequest();
+
+            IEnumerable<CustomerVO> customers = await _repository.FindListIds(ids);
+
+            if (customers == null) return NotFound();
+                       
+            return Ok(customers);
+        }
+
     }
 }

@@ -14,5 +14,6 @@ namespace Customers.API.Repository
         Task<CustomerVO> Create(CustomerVO vo);
         Task<CustomerVO> Update(long id, CustomerVO vo);
         Task<bool> Delete(long id);
+        Task<IEnumerable<CustomerVO>> FindListIds(ListVO vo);
     }
 }
