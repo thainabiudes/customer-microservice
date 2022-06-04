@@ -1,11 +1,10 @@
-﻿using Customers.API.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Customers.API.Model.Context
+namespace Model.Context
 {
     public class MySQLContext : DbContext
     {
-        public MySQLContext() {}
+        public MySQLContext() { }
         public MySQLContext(DbContextOptions<MySQLContext> options) : base(options) { }
 
         public DbSet<Customer> Customer { get; set; }

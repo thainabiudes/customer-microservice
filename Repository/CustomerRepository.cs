@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using Customers.API.Data.ValueObjects;
-using Customers.API.Model;
-using Customers.API.Model.Context;
+using Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.ValueObjects;
+using Model.Context;
 
-namespace Customers.API.Repository
+namespace Repository
 {
     public class CustomerRepository : ICustomerRepository
     {

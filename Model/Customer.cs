@@ -1,8 +1,8 @@
-﻿using Customers.API.Model.Base;
+﻿using Model.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Customers.API.Model
+namespace Model
 {
     [Table("customer")]
     public class Customer : BaseEntity

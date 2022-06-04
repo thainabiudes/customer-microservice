@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
-using Customers.API.Data.ValueObjects;
-using Customers.API.Model;
+using Model;
+using Data.ValueObjects;
 
-namespace Customers.API.Config
+namespace Config
 {
     public class MappingConfig
     {
         public static MapperConfiguration RegisterMaps()
         {
-            var mappingConfig = new MapperConfiguration(config => {
+            var mappingConfig = new MapperConfiguration(config =>
+            {
                 config.CreateMap<CustomerVO, Customer>();
                 config.CreateMap<Customer, CustomerVO>();
             });

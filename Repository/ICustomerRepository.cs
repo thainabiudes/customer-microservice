@@ -1,10 +1,10 @@
-﻿using Customers.API.Data.ValueObjects;
+﻿using Data.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Customers.API.Repository
+namespace Repository
 {
     public interface ICustomerRepository
     {

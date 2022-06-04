@@ -1,10 +1,11 @@
-using Customers.API.Data.ValueObjects;
-using Customers.API.Messages;
-using Customers.API.RabbitMQSender;
-using Customers.API.Repository;
+using Data.ValueObjects;
+using Repository;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Customers.Controllers
@@ -15,15 +16,12 @@ namespace Customers.Controllers
     {
 
         private ICustomerRepository _repository;
-        private IRabbitMQMessageSender _rabbitMQMessageSender;
+        private const string URL_CUSTOMER_API = "https://localhost:44300";
 
-        public CustomerController(ICustomerRepository repository,
-            IRabbitMQMessageSender rabbitMQMessageSender)
+        public CustomerController(ICustomerRepository repository)
         {
             _repository = repository
                 ?? throw new ArgumentNullException(nameof(repository));
-            _rabbitMQMessageSender = rabbitMQMessageSender
-                ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
         }
 
 
@@ -108,28 +106,29 @@ namespace Customers.Controllers
             return Ok(status);
         }
 
-        [HttpPost("send-email")]
-        public async Task<ActionResult<MessageVO>> SendEmail(long id, string bodyEmail)
+        [HttpPost("invoice")]
+        public async Task<ActionResult<InvoiceVO>> PostInvoice(InvoiceVO invoice)
         {
-            if (string.IsNullOrEmpty(id.ToString()) || string.IsNullOrEmpty(bodyEmail)) return BadRequest();
-            
-            var customer = await _repository.FindById(id);
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(URL_CUSTOMER_API);
 
-            if (customer == null) return NotFound();
+                string payload = JsonConvert.SerializeObject(invoice);
 
-            MessageVO message = new MessageVO();
+                var content = new StringContent(payload, Encoding.UTF8, "application/json");
 
-            message.Name = customer.Name;
-            message.Gender = customer.Gender;
-            message.Age = customer.Age;
-            message.Email = customer.Email;
-            message.LastName = customer.LastName;
-            message.BodyEmail = bodyEmail;
-            message.Id = id;
+                using (HttpResponseMessage response = await client.PostAsync("/Invoice", content))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string result = response.Content.ReadAsStringAsync().Result;
+                        InvoiceVO vo = JsonConvert.DeserializeObject<InvoiceVO>(result);
+                        return Ok(vo);
+                    }
 
-            _rabbitMQMessageSender.SendMessage(message, "emailqueue");
-
-            return Ok(message);
+                    return BadRequest(response.Content.ReadAsStringAsync().Result);                    
+                }
+            }
         }
 
         [HttpPost("list")]

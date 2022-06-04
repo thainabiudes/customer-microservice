@@ -1,8 +1,5 @@
 using AutoMapper;
-using Customers.API.Config;
-using Customers.API.Model.Context;
-using Customers.API.RabbitMQSender;
-using Customers.API.Repository;
+using Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Model.Context;
+using Repository;
 using System;
 
 namespace Customers.API
@@ -38,7 +37,6 @@ namespace Customers.API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
